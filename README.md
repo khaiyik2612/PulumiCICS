@@ -14,6 +14,9 @@
         ```
 - Node.js
 
+### Architecture diagram
+![image](./architectureDiagram.png)
+
 ### Pulumi - GKE
 
 1. Change directory into Pulumi project
@@ -69,10 +72,7 @@
     -   auto increment
     -   step written in `main-ci.yml`
 
-2. Deploying new docker image to cluster
+2. Deploying new docker image into kubernetes cluster
     -   Gitlab Action apply deployment to k8s cluster
     -   Trigger manually
     -   step in `gke.yaml`
-
-### Architecture diagram
-![images](./architectureDiagram.png)
