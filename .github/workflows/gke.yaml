@@ -1,7 +1,5 @@
 ---
-name: Deploy php page to GKE
-
-name: Manually triggered workflow
+name: Manually triggered workflow to deploy php page to GKE
 on:
   workflow_dispatch:
     inputs:
