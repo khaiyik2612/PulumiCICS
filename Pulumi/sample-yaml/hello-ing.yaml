@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+  name: phpapp
+spec:
+  rules:
+  - host: sd.org1.casestudy
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpapp
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  - host: sd2.org2.casestudy
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpapp
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
