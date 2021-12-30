@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app:  phpapp
+  template:
+    metadata:
+      labels:
+        app:  phpapp
+    spec:
+      containers:
+      - name:  phpapp
+        image:  gcr.io/pulumi-ci-cs/csphp:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
