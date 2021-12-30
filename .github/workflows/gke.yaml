@@ -1,12 +1,7 @@
 ---
 name: Manually triggered workflow to deploy php page to GKE
 on:
-  workflow_dispatch:
-    inputs:
-      name:
-        description: 'Person to greet'
-        required: true
-        default: 'Mona the Octocat'
+  workflow_dispatch
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
