@@ -1,6 +1,7 @@
 import * as gcp from "@pulumi/gcp";
 import * as k8s from "@pulumi/kubernetes";
 import * as pulumi from "@pulumi/pulumi";
+import * as path from "path";
 
 const name = "casestudy";
 
@@ -79,6 +80,7 @@ const clusterProvider = new k8s.Provider(name, {
   dependsOn: [nodePool],
 });
 
+//create nginx ingress
 const nginxClass = new k8s.yaml.ConfigFile("nginxclass", {
     file: "nginxClass.yaml",
 }, {
@@ -88,69 +90,13 @@ const nginxClass = new k8s.yaml.ConfigFile("nginxclass", {
 const ingnginx = nginxClass.getResource("v1/Service", "ingress-nginx-controller");
 export const externalIp = ingnginx.spec.externalIPs;
 
-// // Create a Kubernetes Namespace
-// const ns = new k8s.core.v1.Namespace(name, {}, { provider: clusterProvider });
+//create sample page
+const casestudyApp = new k8s.yaml.ConfigGroup("casestudyApp", {
+    files: [ path.join("../sample-yaml", "*.yaml") ],
+}, {
+    provider: clusterProvider,
+    dependsOn: [nginxClass],
+});
 
-// // Export the Namespace name
-// export const namespaceName = ns.metadata.name;
+const app = casestudyApp.getResource("networking.k8s.io/v1/Ingress","phpapp")
 
-// // Create a NGINX Deployment
-// const appLabels = { appClass: name };
-// const deployment = new k8s.apps.v1.Deployment(name,
-//     {
-//         metadata: {
-//             namespace: namespaceName,
-//             labels: appLabels,
-//         },
-//         spec: {
-//             replicas: 1,
-//             selector: { matchLabels: appLabels },
-//             template: {
-//                 metadata: {
-//                     labels: appLabels,
-//                 },
-//                 spec: {
-//                     containers: [
-//                         {
-//                             name: name,
-//                             image: "nginx:latest",
-//                             ports: [{ name: "http", containerPort: 80 }],
-//                         },
-//                     ],
-//                 },
-//             },
-//         },
-//     },
-//     {
-//         provider: clusterProvider,
-//     },
-// );
-
-// // Export the Deployment name
-// export const deploymentName = deployment.metadata.name;
-
-// // Create a LoadBalancer Service for the NGINX Deployment
-// const service = new k8s.core.v1.Service(name,
-//     {
-//         metadata: {
-//             labels: appLabels,
-//             namespace: namespaceName,
-//         },
-//         spec: {
-//             type: "LoadBalancer",
-//             ports: [{ port: 80, targetPort: "http" }],
-//             selector: appLabels,
-//         },
-//     },
-//     {
-//         provider: clusterProvider,
-//     },
-// );
-
-// // Export the Service name and public LoadBalancer endpoint
-// export const serviceName = service.metadata.name;
-// export const servicePublicIP = service.status.loadBalancer.ingress[0].ip;
-
-
-// const frontend = nginxClass.getResource("v1/Service", "frontend");
-// export const privateIp = frontend.spec.clusterIP;
