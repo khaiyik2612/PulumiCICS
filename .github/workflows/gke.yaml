@@ -5,7 +5,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: casestudy-af65374   
+  GKE_CLUSTER: casestudy-7fc619d
   GKE_ZONE: asia-southeast2-b
   DEPLOYMENT_NAME: phpapp
 
