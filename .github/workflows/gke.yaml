@@ -10,9 +10,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_CLUSTER: cluster-1    # TODO: update to cluster name
-  GKE_ZONE: europe-central2-a	   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: gke-hello-app # TODO: update deployment name if changed in deployment.yaml
+  GKE_CLUSTER: casestudy-af65374   
+  GKE_ZONE: asia-southeast2-b
+  DEPLOYMENT_NAME: phpapp
 
 jobs:
   setup-and-deploy:
@@ -52,6 +52,6 @@ jobs:
     # Deploy sample image to the GKE cluster
     - name: Deploy
       run: |-
-        kubectl apply -f deployment.yml
+        kubectl apply -f hello-dep.yaml
         kubectl rollout status deployment/$DEPLOYMENT_NAME
         kubectl get services -o wide
