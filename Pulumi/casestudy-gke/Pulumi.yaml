@@ -1,0 +1,3 @@
+name: casestudy-gke
+runtime: nodejs
+description: Casestudy for gcp's GKE
