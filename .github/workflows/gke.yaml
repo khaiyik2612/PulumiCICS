@@ -31,6 +31,7 @@ jobs:
     - name: Deploy
       working-directory: ./Pulumi/sample-yaml
       run: |-
+        kubectl delete -f hello-dep.yaml
         kubectl apply -f hello-dep.yaml
         kubectl rollout status deployment/$DEPLOYMENT_NAME
         kubectl get po -o wide
