@@ -24,13 +24,18 @@ jobs:
       working-directory: ./phppage
       run: docker build -t $IMAGE_NAME:latest .
 
+    - name: Automatic Tagging of Releases
+      id: increment-git-tag
+      run: |
+        bash ./scripts/git_update.sh -v patch
+
     - name: Configure Docker Client
       run: |-
         gcloud auth configure-docker --quiet
 
     - name: Push Docker Image to Container Registry (GCR)
       env:
-        GIT_TAG: 0.1.0
+        GIT_TAG: GIT_TAG: ${{ steps.increment-git-tag.outputs.git-tag }}
       run: |-
         docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:latest
         docker tag $IMAGE_NAME:latest gcr.io/$PROJECT_ID/$IMAGE_NAME:$GIT_TAG
